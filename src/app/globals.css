@@ -1,26 +1,292 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ------------------------------------------------------------
+   Design tokens : White × Deep Navy × Electric Blue (+ 少しの Violet)
+   ------------------------------------------------------------ */
+@theme {
+  --color-navy-950: #040a1c;
+  --color-navy-900: #081330;
+  --color-navy-800: #0d1d45;
+  --color-navy-700: #173067;
+  --color-navy-600: #24418a;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-electric-600: #1f55e6;
+  --color-electric-500: #2f6bff;
+  --color-electric-400: #5b8cff;
+  --color-electric-100: #e3ecff;
+  --color-electric-50: #f1f5ff;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --color-aqua-400: #38d5ff;
+  --color-aqua-300: #7de3ff;
+  --color-iris-500: #7c5cff;
+  --color-iris-400: #9a82ff;
+
+  --color-ink: #0b1530;
+  --color-muted: #56607a;
+  --color-line: #e2e7f1;
+  --color-mist: #f4f7fc;
+
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-pulse-soft: pulse-soft 3.2s ease-in-out infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  @keyframes pulse-soft {
+    0%,
+    100% {
+      opacity: 0.55;
+    }
+    50% {
+      opacity: 1;
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@theme inline {
+  --font-sans: var(--font-manrope), var(--font-noto-jp), "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+  --font-display: var(--font-manrope), var(--font-noto-jp), sans-serif;
+}
+
+/* ------------------------------------------------------------
+   Base
+   ------------------------------------------------------------ */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: #ffffff;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "palt" 1;
+    line-height: 1.8;
+    letter-spacing: 0.02em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: var(--color-electric-500);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-electric-500);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
+}
+
+/* ------------------------------------------------------------
+   Components
+   ------------------------------------------------------------ */
+@layer components {
+  .container-x {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 76rem;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 640px) {
+    .container-x {
+      padding-inline: 2rem;
+    }
+  }
+
+  /* 見出しの英字ラベル */
+  .eyebrow {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+  }
+
+  /* グラデーション文字 */
+  .text-gradient {
+    background-image: linear-gradient(100deg, var(--color-aqua-400) 0%, var(--color-electric-400) 45%, var(--color-iris-400) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .text-gradient-deep {
+    background-image: linear-gradient(100deg, var(--color-electric-600) 0%, var(--color-electric-500) 40%, var(--color-iris-500) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .bg-brand-gradient {
+    background-image: linear-gradient(110deg, var(--color-electric-500) 0%, #4a5dff 55%, var(--color-iris-500) 100%);
+  }
+
+  /* 背景の薄いグリッド (暗色面用) */
+  .bg-grid-dark {
+    background-image:
+      linear-gradient(rgba(125, 160, 255, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(125, 160, 255, 0.07) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 100%);
+  }
+  /* 背景の薄いグリッド (明色面用) */
+  .bg-grid-light {
+    background-image:
+      linear-gradient(rgba(23, 48, 103, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(23, 48, 103, 0.06) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, #000 20%, transparent 100%);
+  }
+
+  /* ガラス調カード (暗色面用) */
+  .glass {
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  /* 写真の上に重ねる、読みやすさ重視のカード */
+  .glass-strong {
+    background: linear-gradient(160deg, rgba(13, 29, 69, 0.92), rgba(8, 19, 48, 0.88));
+    border: 1px solid rgba(125, 160, 255, 0.22);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  /* 表 (会社概要など) */
+  .spec-table th {
+    white-space: nowrap;
+  }
+}
+
+/* ------------------------------------------------------------
+   Scroll reveal (JS 有効時のみ非表示から開始。JS が無くても内容は表示される)
+   ------------------------------------------------------------ */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.js [data-reveal][data-visible] {
+  opacity: 1;
+  transform: none;
+}
+
+/* AI フローのデータパルス */
+.flow-line {
+  position: relative;
+  overflow: hidden;
+}
+.flow-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, var(--color-aqua-400), transparent);
+  width: 40%;
+  animation: flow-x 2.4s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  animation-delay: var(--flow-delay, 0s);
+}
+.flow-line-v::after {
+  width: 100%;
+  height: 40%;
+  background: linear-gradient(180deg, transparent, var(--color-aqua-400), transparent);
+  animation-name: flow-y;
+}
+@keyframes flow-x {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(260%);
+  }
+}
+@keyframes flow-y {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(260%);
+  }
+}
+
+/* 背景の流れる破線 (ヒーロー) */
+.dash-flow {
+  stroke-dasharray: 3 16;
+  animation: dash-flow 9s linear infinite;
+}
+.dash-slow {
+  animation-duration: 14s;
+}
+@keyframes dash-flow {
+  to {
+    stroke-dashoffset: -380;
+  }
+}
+
+/* 入力中インジケーター (デモ用) */
+.typing-dot {
+  animation: typing 1.2s infinite ease-in-out;
+}
+.typing-dot:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.typing-dot:nth-child(3) {
+  animation-delay: 0.3s;
+}
+@keyframes typing {
+  0%,
+  80%,
+  100% {
+    opacity: 0.25;
+    transform: translateY(0);
+  }
+  40% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .js [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }

@@ -1,69 +1,76 @@
-import Image from "next/image";
+import type { Metadata } from "next";
+import { Hero } from "@/components/home/Hero";
+import { About } from "@/components/home/About";
+import { Vision } from "@/components/home/Vision";
+import { Service } from "@/components/home/Service";
+import { Challenges } from "@/components/home/Challenges";
+import { AiDevelopment } from "@/components/home/AiDevelopment";
+import { DemoLabTeaser } from "@/components/home/DemoLabTeaser";
+import { Works } from "@/components/home/Works";
+import { Team } from "@/components/home/Team";
+import { CeoStory } from "@/components/home/CeoStory";
+import { RecruitTeaser } from "@/components/home/RecruitTeaser";
+import { Company } from "@/components/home/Company";
+import { Contact } from "@/components/home/Contact";
+import { company } from "@/lib/site";
+import { SITE_URL } from "@/lib/site-url";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+  // openGraph はレイアウトの値を丸ごと置き換えるため、すべての項目を指定する
+  openGraph: {
+    type: "website",
+    locale: "ja_JP",
+    siteName: company.name,
+    title: "jyugo合同会社｜企業の未来を、技術と人の力で実装する。",
+    description:
+      "jyugo合同会社（ジュゴー）は横浜のITベンチャーです。AIシステム開発・業務/Webシステム開発・SES・DX支援・コンサルティングを、事業課題の整理から開発・運用まで一気通貫で提供します。",
+    url: "/",
+  },
+};
+
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: company.name,
+  alternateName: [company.nameEn, "ジュゴー"],
+  url: `${SITE_URL}/`,
+  logo: `${SITE_URL}/icon.svg`,
+  email: company.email,
+  slogan: company.tagline,
+  foundingDate: company.foundedIso,
+  founder: { "@type": "Person", name: company.representative },
+  address: {
+    "@type": "PostalAddress",
+    postalCode: "220-0004",
+    addressRegion: "神奈川県",
+    addressLocality: "横浜市西区",
+    streetAddress: "北幸1-11-5 相鉄KSビル 6F＆9F",
+    addressCountry: "JP",
+  },
+  knowsAbout: ["AIシステム開発", "コンサルティング", "SES", "受託開発", "DX支援"],
+};
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd).replace(/</g, "\\u003c") }}
+      />
+      <Hero />
+      <About />
+      <Vision />
+      <Service />
+      <Challenges />
+      <AiDevelopment />
+      <DemoLabTeaser />
+      <Works />
+      <Team />
+      <CeoStory />
+      <RecruitTeaser />
+      <Company />
+      <Contact />
+    </>
   );
 }

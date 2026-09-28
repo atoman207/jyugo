@@ -1,0 +1,11 @@
+# Apache 用設定 (静的書き出しした out/ をそのまま設置する場合)
+ErrorDocument 404 /404.html
+DirectoryIndex index.html
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  # /_next/static/ 配下はファイル名にハッシュが付くため長期キャッシュ可能
+  <FilesMatch "\.(js|css|woff2|jpg|jpeg|png|svg|webp)$">
+    ExpiresDefault "access plus 30 days"
+  </FilesMatch>
+</IfModule>
